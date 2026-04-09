@@ -15,30 +15,31 @@ def build_html(diagram: str, title: str) -> str:
     safe_title = html.escape(title or DEFAULT_TITLE)
     safe_diagram = html.escape(diagram.strip())
     return f"""<!doctype html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"utf-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{safe_title}</title>
   <style>
     :root {{
       color-scheme: light;
-      --bg: #f6f2ea;
-      --panel: #fffdf8;
-      --ink: #1d252c;
-      --muted: #5f6b76;
-      --line: #d8cbb8;
-      --accent: #0f6b5f;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --ink: #182030;
+      --muted: #64748b;
+      --line: #c7d2e3;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
     }}
     * {{ box-sizing: border-box; }}
     body {{
       margin: 0;
       min-height: 100vh;
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(15,107,95,.16), transparent 34rem),
-        linear-gradient(135deg, #f6f2ea, #eee4d4);
+        radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 28rem),
+        linear-gradient(180deg, #f8fafc, #eef3fb);
     }}
     header {{
       position: sticky;
@@ -50,7 +51,7 @@ def build_html(diagram: str, title: str) -> str:
       gap: 1rem;
       padding: 14px 18px;
       border-bottom: 1px solid var(--line);
-      background: rgba(255,253,248,.92);
+      background: rgba(255,255,255,.92);
       backdrop-filter: blur(14px);
     }}
     h1 {{
@@ -80,11 +81,11 @@ def build_html(diagram: str, title: str) -> str:
       min-height: 0;
       display: inline-grid;
       place-items: center;
-      padding: 24px 28px;
+      padding: 28px 32px;
       border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(255,253,248,.84);
-      box-shadow: 0 24px 70px rgba(51,42,28,.12);
+      border-radius: 22px;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 24px 70px rgba(15,23,42,.08);
       transform-origin: top center;
       margin: 0 auto;
     }}
@@ -101,7 +102,7 @@ def build_html(diagram: str, title: str) -> str:
     button {{
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: #fffaf0;
+      background: #ffffff;
       color: var(--ink);
       padding: 7px 12px;
       font: inherit;
@@ -110,6 +111,7 @@ def build_html(diagram: str, title: str) -> str:
     button:hover {{
       border-color: var(--accent);
       color: var(--accent);
+      background: var(--accent-soft);
     }}
   </style>
 </head>
@@ -117,50 +119,50 @@ def build_html(diagram: str, title: str) -> str:
   <header>
     <div>
       <h1>{safe_title}</h1>
-      <p class=\"hint\">Scroll to pan. Use browser zoom or the buttons to inspect details.</p>
+      <p class="hint">Scroll to pan. Use browser zoom or the buttons to inspect details.</p>
     </div>
-    <div class=\"toolbar\">
-      <button type=\"button\" onclick=\"zoom(0.85)\">Zoom out</button>
-      <button type=\"button\" onclick=\"zoom(1.15)\">Zoom in</button>
-      <button type=\"button\" onclick=\"resetZoom()\">Reset</button>
+    <div class="toolbar">
+      <button type="button" onclick="zoom(0.85)">Zoom out</button>
+      <button type="button" onclick="zoom(1.15)">Zoom in</button>
+      <button type="button" onclick="resetZoom()">Reset</button>
     </div>
   </header>
-  <main class=\"stage\">
-    <section class=\"canvas-wrap\">
-      <div id=\"canvas\" class=\"canvas\">
-        <pre class=\"mermaid\">
+  <main class="stage">
+    <section class="canvas-wrap">
+      <div id="canvas" class="canvas">
+        <pre class="mermaid">
 {safe_diagram}
         </pre>
       </div>
     </section>
   </main>
-  <script type=\"module\">
-    import mermaid from \"https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs\";
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
     mermaid.initialize({{
       startOnLoad: true,
-      securityLevel: \"loose\",
-      theme: \"base\",
+      securityLevel: "loose",
+      theme: "base",
       themeVariables: {{
-        fontFamily: \"Segoe UI, sans-serif\",
-        primaryColor: \"#fff8e8\",
-        primaryTextColor: \"#1d252c\",
-        primaryBorderColor: \"#0f6b5f\",
-        lineColor: \"#6c7a86\",
-        secondaryColor: \"#e4f3ef\",
-        tertiaryColor: \"#f7ead7\",
-        clusterBkg: \"#fffdf8\",
-        clusterBorder: \"#d8cbb8\"
+        fontFamily: "Segoe UI, sans-serif",
+        primaryColor: "#ffffff",
+        primaryTextColor: "#182030",
+        primaryBorderColor: "#b9c7dc",
+        lineColor: "#2563eb",
+        secondaryColor: "#ffffff",
+        tertiaryColor: "#f8fafc",
+        clusterBkg: "#ffffff",
+        clusterBorder: "#c7d2e3"
       }}
     }});
     let scale = 1;
-    const canvas = document.getElementById(\"canvas\");
+    const canvas = document.getElementById("canvas");
     window.zoom = (factor) => {{
       scale = Math.max(0.35, Math.min(3.0, scale * factor));
       canvas.style.transform = `scale(${{scale}})`;
     }};
     window.resetZoom = () => {{
       scale = 1;
-      canvas.style.transform = \"scale(1)\";
+      canvas.style.transform = "scale(1)";
     }};
   </script>
 </body>

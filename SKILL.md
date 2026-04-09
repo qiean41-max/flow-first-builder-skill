@@ -68,6 +68,7 @@ Use this skill when the user says things like:
 | Diagram count | Exactly one diagram per response |
 | Diagram mode | That one diagram must be either `main` or `sub` |
 | Diagram source of truth | `Mermaid`, plus zoomable HTML preview when readability is weak |
+| Diagram visual standard | clean hierarchical layout, no tangled branches, no decorative clutter |
 | Coding rule | Do not move to implementation before diagram confirmation |
 | Handoff after confirmation | Implementation order, module split, interfaces, stack guidance |
 
@@ -151,6 +152,30 @@ Recommended output location:
 When a preview file is created, include a clickable absolute path to it in the response. Do not replace the Mermaid source with HTML only; keep Mermaid as the canonical source for future reasoning.
 
 Mermaid remains the canonical version because AI can continue reasoning from it.
+
+### Rule 6A: Diagram visual standard is strict
+
+When generating a diagram, optimize for readability first.
+
+Mandatory visual rules:
+
+- prefer one dominant axis: top-to-bottom for pipelines, left-to-right for staged flows
+- keep the main spine visually centered
+- place branches on separate rails instead of weaving lines back through the spine
+- avoid crossing edges whenever reasonably possible
+- keep labels short and concrete
+- do not use decorative icons, emojis, busy color legends, or dense paragraph labels inside nodes
+- use node role tags only when useful, such as `Agent`, `Tool`, `Router`, `Gate`
+- if a branch grows dense, split it in the next round instead of cramming more nodes into one diagram
+
+The target look is:
+
+- clean
+- interview friendly
+- easy to explain aloud in under one minute
+- visually close to a system flowboard, not a chaotic mind map
+
+If a generated Mermaid draft would look tangled, the skill should simplify the structure before showing it.
 
 ### Rule 7: Do not code before the diagram is confirmed
 
@@ -236,6 +261,14 @@ Contains:
 - current mode (`main` or `sub`)
 - current module
 - Mermaid diagram
+
+The diagram should also follow this presentation order when useful:
+
+1. main spine
+2. branch split
+3. branch outcomes
+
+Do not scatter the user's attention across the canvas.
 
 ### Explanation
 
